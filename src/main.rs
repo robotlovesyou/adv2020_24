@@ -125,25 +125,19 @@ impl TileGame {
         TileGame { state }
     }
 
-    fn adjacent_coordinates(&self, coordinates: (i64, i64)) -> Vec<(i64, i64)> {
-        let (q, r) = coordinates;
-        let mut adjacent = Vec::with_capacity(6);
-
-        adjacent.push((q + 1, r - 1));
-        adjacent.push((q + 1, r));
-        adjacent.push((q, r + 1));
-        adjacent.push((q - 1, r + 1));
-        adjacent.push((q - 1, r));
-        adjacent.push((q, r - 1));
-        adjacent
-    }
-
     fn white_tiles_to_test(&self) -> HashSet<(i64, i64)> {
         let mut to_test = HashSet::new();
         for (q, r) in self.state.iter().cloned() {
-            for coordinate in self.adjacent_coordinates((q, r)).into_iter() {
+            for coordinate in [
+                (q + 1, r - 1),
+                (q + 1, r),
+                (q, r + 1),
+                (q - 1, r + 1),
+                (q - 1, r),
+                (q, r - 1),
+            ].iter() {
                 if !self.state.contains(&coordinate) {
-                    to_test.insert(coordinate);
+                    to_test.insert(*coordinate);
                 }
             }
         }
